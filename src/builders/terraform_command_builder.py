@@ -4,15 +4,15 @@ class TerraformCommandBuilder:
     def __init__(self):
         self.command_string = "terraform"
 
-    def start_init(self):
+    def init(self):
         self.command_string += " init"
         return self
 
-    def start_plan(self):
+    def plan(self):
         self.command_string += " plan"
         return self
 
-    def start_apply(self):
+    def apply(self):
         self.command_string += " apply"
         return self
 
