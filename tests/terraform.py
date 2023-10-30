@@ -1,7 +1,7 @@
 from src.commands.command import Command
 from src.builders.terraform_command_builder import TerraformCommandBuilder
 from src.commands.terraform_command import TerraformCommand
-from src.builders.command_runner import CommandRunner
+from src.commands.command_runner import CommandRunner
 import pytest
 
 def test_terraform_command_execute():
@@ -18,6 +18,18 @@ def test_build_terraform_init_command():
     )
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform init"
+
+def test_build_terraform_init_reconfigure_command():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .init(
+            backend_config="test"
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform init -reconfigure -backend-config=\"test\""
 
 def test_build_terraform_plan_command():
     builder = TerraformCommandBuilder()
