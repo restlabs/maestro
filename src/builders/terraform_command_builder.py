@@ -1,5 +1,6 @@
 from src.commands.terraform_command import TerraformCommand
 
+
 class TerraformCommandBuilder:
     def __init__(self):
         self.command_string = "terraform"
