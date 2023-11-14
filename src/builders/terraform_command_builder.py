@@ -10,8 +10,10 @@ class TerraformCommandBuilder:
             self.command_string += f' -reconfigure -backend-config="{backend_config}"'
         return self
 
-    def plan(self):
+    def plan(self, var_file_name):
         self.command_string += " plan"
+        if var_file_name:
+            self.command_string += f' -var-file="{var_file_name}"'
         return self
 
     def apply(self):
