@@ -41,6 +41,18 @@ def test_build_terraform_plan_command():
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform plan"
 
+def test_build_terraform_plan_command():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .plan(
+            var_file_name="test"
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform plan -var-file=\"test\""
+
 
 def test_build_terraform_apply_with_variables_command():
     builder = TerraformCommandBuilder()
