@@ -138,6 +138,30 @@ def test_build_terraform_plan_command_with_multiple_target():
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform plan -target=test -target=test2"
 
+def test_build_terraform_plan_command_with_var_input():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .plan(
+            var_inputs=["KEY=VALUE"]
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform plan -var 'KEY=VALUE'"
+
+def test_build_terraform_plan_command_with_var_inputs():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .plan(
+            var_inputs=["KEY=VALUE","KEY2=VALUE2"]
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform plan -var 'KEY=VALUE' -var 'KEY2=VALUE2'"
+
 def test_build_terraform_apply_with_variables_command():
     builder = TerraformCommandBuilder()
     terraform_command = (

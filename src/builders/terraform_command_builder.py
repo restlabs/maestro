@@ -17,7 +17,8 @@ class TerraformCommandBuilder:
              refresh_only: bool = None,
              refresh_false: bool = None,
              replace: list[str] = None,
-             targets: list[str] = None
+             targets: list[str] = None,
+             var_inputs: list[str] = None
              ) -> str:
         
         self.command_string += " plan"
@@ -44,6 +45,10 @@ class TerraformCommandBuilder:
         if targets:
             for target in targets:
                 self.command_string += f' -target={target}'
+
+        if var_inputs:
+            for var in var_inputs:
+                self.command_string += f" -var '{var}'"
 
         return self
 
