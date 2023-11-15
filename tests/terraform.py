@@ -65,6 +65,66 @@ def test_build_terraform_plan_command_with_plan_output():
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform plan -out=test"
 
+def test_build_terraform_plan_command_with_destroy():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .plan(
+            destroy=True
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform plan -destroy"
+
+def test_build_terraform_plan_command_with_refresh():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .plan(
+            refresh_only=True
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform plan -refresh-only"
+
+def test_build_terraform_plan_command_with_var_file_destroy():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .plan(
+            var_file_name="test",
+            destroy=True
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform plan -var-file=test -destroy"
+
+def test_build_terraform_plan_command_with_refresh_false():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .plan(
+            refresh_false=True
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform plan -refresh=false"
+
+def test_build_terraform_plan_command_with_multiple_replace():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .plan(
+            replace=["test","test2"]
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform plan -replace=test -replace=test2"
 
 def test_build_terraform_apply_with_variables_command():
     builder = TerraformCommandBuilder()
