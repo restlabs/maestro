@@ -29,7 +29,7 @@ def test_build_terraform_init_reconfigure_command():
         .build()
     )
     assert isinstance(terraform_command, TerraformCommand)
-    assert terraform_command.command_string == "terraform init -reconfigure -backend-config=\"test\""
+    assert terraform_command.command_string == "terraform init -reconfigure -backend-config=test"
 
 def test_build_terraform_plan_command():
     builder = TerraformCommandBuilder()
@@ -41,7 +41,7 @@ def test_build_terraform_plan_command():
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform plan"
 
-def test_build_terraform_plan_command():
+def test_build_terraform_plan_command_with_var_file():
     builder = TerraformCommandBuilder()
     terraform_command = (
         builder
@@ -51,7 +51,19 @@ def test_build_terraform_plan_command():
         .build()
     )
     assert isinstance(terraform_command, TerraformCommand)
-    assert terraform_command.command_string == "terraform plan -var-file=\"test\""
+    assert terraform_command.command_string == "terraform plan -var-file=test"
+
+def test_build_terraform_plan_command_with_plan_output():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .plan(
+            plan_output_file_name="test"
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform plan -out=test"
 
 
 def test_build_terraform_apply_with_variables_command():
