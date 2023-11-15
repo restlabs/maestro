@@ -126,6 +126,18 @@ def test_build_terraform_plan_command_with_multiple_replace():
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform plan -replace=test -replace=test2"
 
+def test_build_terraform_plan_command_with_multiple_target():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .plan(
+            targets=["test","test2"]
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform plan -target=test -target=test2"
+
 def test_build_terraform_apply_with_variables_command():
     builder = TerraformCommandBuilder()
     terraform_command = (

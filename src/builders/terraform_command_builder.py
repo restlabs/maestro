@@ -16,7 +16,8 @@ class TerraformCommandBuilder:
              destroy: bool = None,
              refresh_only: bool = None,
              refresh_false: bool = None,
-             replace: list[str] = None
+             replace: list[str] = None,
+             targets: list[str] = None
              ) -> str:
         
         self.command_string += " plan"
@@ -39,6 +40,10 @@ class TerraformCommandBuilder:
         if replace:
             for replacement in replace:
                 self.command_string += f' -replace={replacement}'
+
+        if targets:
+            for target in targets:
+                self.command_string += f' -target={target}'
 
         return self
 
