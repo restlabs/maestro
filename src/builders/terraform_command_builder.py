@@ -1,4 +1,6 @@
 from src.commands.terraform_command import TerraformCommand
+from typing import List, Optional
+
 
 class TerraformCommandBuilder:
     def __init__(self):
@@ -18,7 +20,11 @@ class TerraformCommandBuilder:
              refresh_false: bool = None,
              replace: list[str] = None,
              targets: list[str] = None,
-             var_inputs: list[str] = None
+             var_inputs: list[str] = None,
+             compact_warnings: bool = None,
+             detailed_exit_code: bool = None,
+             input_false: bool = None,
+             json: bool = None
              ) -> str:
         
         self.command_string += " plan"
@@ -49,6 +55,18 @@ class TerraformCommandBuilder:
         if var_inputs:
             for var in var_inputs:
                 self.command_string += f" -var '{var}'"
+
+        if compact_warnings:
+            self.command_string += ' -compact-warnings'
+
+        if detailed_exit_code:
+            self.command_string += ' -detailed-exitcode'
+
+        if input_false:
+            self.command_string += ' -input=false'
+
+        if json:
+            self.command_string += ' -json'
 
         return self
 

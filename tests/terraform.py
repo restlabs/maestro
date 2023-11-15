@@ -162,6 +162,54 @@ def test_build_terraform_plan_command_with_var_inputs():
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform plan -var 'KEY=VALUE' -var 'KEY2=VALUE2'"
 
+def test_build_terraform_plan_command_with_compact_warnings():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .plan(
+            compact_warnings=True
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform plan -compact-warnings"
+
+def test_build_terraform_plan_command_with_detailed_exit_code():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .plan(
+            detailed_exit_code=True
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform plan -detailed-exitcode"
+
+def test_build_terraform_plan_command_with_input_false():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .plan(
+            input_false=True
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform plan -input=false"
+
+def test_build_terraform_plan_command_with_json():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .plan(
+            json=True
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform plan -json"
+
 def test_build_terraform_apply_with_variables_command():
     builder = TerraformCommandBuilder()
     terraform_command = (
