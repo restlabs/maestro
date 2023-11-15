@@ -155,12 +155,12 @@ def test_build_terraform_plan_command_with_var_inputs():
     terraform_command = (
         builder
         .plan(
-            var_inputs=["KEY=VALUE","KEY2=VALUE2"]
+            var_inputs=["KEY=VALUE","KEY2=VALUE2", "KEY3=VALUE3"]
         )
         .build()
     )
     assert isinstance(terraform_command, TerraformCommand)
-    assert terraform_command.command_string == "terraform plan -var 'KEY=VALUE' -var 'KEY2=VALUE2'"
+    assert terraform_command.command_string == "terraform plan -var 'KEY=VALUE' -var 'KEY2=VALUE2' -var 'KEY3=VALUE3'"
 
 def test_build_terraform_plan_command_with_compact_warnings():
     builder = TerraformCommandBuilder()
@@ -210,6 +210,18 @@ def test_build_terraform_plan_command_with_json():
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform plan -json"
 
+def test_build_terraform_plan_command_with_lock_false():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .plan(
+            lock_false=True
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform plan -lock=false"
+
 def test_build_terraform_apply_with_variables_command():
     builder = TerraformCommandBuilder()
     terraform_command = (
@@ -224,5 +236,5 @@ def test_build_terraform_apply_with_variables_command():
 def test_command_runner_run_command():
     runner = CommandRunner()
     terraform_command = TerraformCommand("dummy_command")
-    output = runner.run_command(terraform_command.execute())  # Invoke execute here
+    output = runner.run_command(terraform_command.execute())
     assert output == "Executing command: Executing Terraform command: dummy_command"

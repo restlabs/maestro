@@ -12,30 +12,43 @@ class TerraformCommandBuilder:
             self.command_string += f' -reconfigure -backend-config={backend_config}'
         return self
 
-    def plan(self, **kwargs) -> str:
-        command_mapping = {
-            'var_file_name': lambda file_value: f' -var-file={file_value}',
-            'plan_output_file_name': lambda output_value: f' -out={output_value}',
-            'destroy': lambda destroy_value: ' -destroy',
-            'refresh_only': lambda refresh_value: ' -refresh-only',
-            'refresh_false': lambda refresh_false_value: ' -refresh=false',
-            'replace': lambda replacements: ''.join([f' -replace={replacement}' for replacement in replacements]),
-            'targets': lambda target_values: ''.join([f' -target={target}' for target in target_values]),
-            'var_inputs': lambda var_values: ''.join([f" -var '{var}'" for var in var_values]),
-            'compact_warnings': lambda compact_warnings_value: ' -compact-warnings',
-            'detailed_exit_code': lambda detailed_exit_code_value: ' -detailed-exitcode',
-            'input_false': lambda input_false_value: ' -input=false',
-            'json': lambda json_value: ' -json',
+    def plan(self, 
+            var_file_name: str = None, 
+            plan_output_file_name: str = None, 
+            destroy: bool = None,
+            refresh_only: bool = None,
+            refresh_false: bool = None,
+            replace: list[str] = None,
+            targets: list[str] = None,
+            var_inputs: list[str] = None,
+            compact_warnings: bool = None,
+            detailed_exit_code: bool = None,
+            input_false: bool = None,
+            json: bool = None,
+            lock_false: bool = None
+            ) -> str:
+        
+        self.command_string += " plan"
+
+        options_mapping = {
+            'var_file_name': f' -var-file={var_file_name}' if var_file_name else '',
+            'plan_output_file_name': f' -out={plan_output_file_name}' if plan_output_file_name else '',
+            'destroy': ' -destroy' if destroy else '',
+            'refresh_only': ' -refresh-only' if refresh_only else '',
+            'refresh_false': ' -refresh=false' if refresh_false else '',
+            'replace': f" {' '.join([f'-replace={replacement}' for replacement in replace])}" if replace else '',
+            'targets': f" {' '.join([f'-target={target}' for target in targets])}" if targets else '',
+            'var_inputs': ''.join([f" -var '{v}'" for v in var_inputs]) if var_inputs else '',
+            'compact_warnings': ' -compact-warnings' if compact_warnings else '',
+            'detailed_exit_code': ' -detailed-exitcode' if detailed_exit_code else '',
+            'input_false': ' -input=false' if input_false else '',
+            'json': ' -json' if json else '',
+            'lock_false': ' -lock=false' if lock_false else '',
         }
 
-        self.command_string += ' plan'
-
-        for arg, value in kwargs.items():
-            if arg in command_mapping:
-                self.command_string += command_mapping[arg](value)
+        self.command_string += ''.join(options_mapping.values())
 
         return self
-
 
 
     def apply(self):
