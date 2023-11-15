@@ -224,5 +224,5 @@ def test_build_terraform_apply_with_variables_command():
 def test_command_runner_run_command():
     runner = CommandRunner()
     terraform_command = TerraformCommand("dummy_command")
-    output = runner.run_command(terraform_command.command_string)
-    assert output == "Executing command: dummy_command"
+    output = runner.run_command(terraform_command.execute())  # Invoke execute here
+    assert output == "Executing command: Executing Terraform command: dummy_command"
