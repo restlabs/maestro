@@ -12,63 +12,31 @@ class TerraformCommandBuilder:
             self.command_string += f' -reconfigure -backend-config={backend_config}'
         return self
 
-    def plan(self, 
-             var_file_name: str = None, 
-             plan_output_file_name: str = None, 
-             destroy: bool = None,
-             refresh_only: bool = None,
-             refresh_false: bool = None,
-             replace: list[str] = None,
-             targets: list[str] = None,
-             var_inputs: list[str] = None,
-             compact_warnings: bool = None,
-             detailed_exit_code: bool = None,
-             input_false: bool = None,
-             json: bool = None
-             ) -> str:
-        
-        self.command_string += " plan"
+    def plan(self, **kwargs) -> str:
+        command_mapping = {
+            'var_file_name': lambda file_value: f' -var-file={file_value}',
+            'plan_output_file_name': lambda output_value: f' -out={output_value}',
+            'destroy': lambda destroy_value: ' -destroy',
+            'refresh_only': lambda refresh_value: ' -refresh-only',
+            'refresh_false': lambda refresh_false_value: ' -refresh=false',
+            'replace': lambda replacements: ''.join([f' -replace={replacement}' for replacement in replacements]),
+            'targets': lambda target_values: ''.join([f' -target={target}' for target in target_values]),
+            'var_inputs': lambda var_values: ''.join([f" -var '{var}'" for var in var_values]),
+            'compact_warnings': lambda compact_warnings_value: ' -compact-warnings',
+            'detailed_exit_code': lambda detailed_exit_code_value: ' -detailed-exitcode',
+            'input_false': lambda input_false_value: ' -input=false',
+            'json': lambda json_value: ' -json',
+        }
 
-        if var_file_name:
-            self.command_string += f' -var-file={var_file_name}'
+        self.command_string += ' plan'
 
-        if plan_output_file_name:
-            self.command_string += f' -out={plan_output_file_name}'
-
-        if destroy:
-            self.command_string += ' -destroy'
-
-        if refresh_only:
-            self.command_string += ' -refresh-only'
-
-        if refresh_false:
-            self.command_string += ' -refresh=false'
-
-        if replace:
-            for replacement in replace:
-                self.command_string += f' -replace={replacement}'
-
-        if targets:
-            for target in targets:
-                self.command_string += f' -target={target}'
-
-        if var_inputs:
-            for var in var_inputs:
-                self.command_string += f" -var '{var}'"
-
-        if compact_warnings:
-            self.command_string += ' -compact-warnings'
-
-        if detailed_exit_code:
-            self.command_string += ' -detailed-exitcode'
-
-        if input_false:
-            self.command_string += ' -input=false'
-
-        if json:
-            self.command_string += ' -json'
+        for arg, value in kwargs.items():
+            if arg in command_mapping:
+                self.command_string += command_mapping[arg](value)
 
         return self
+
+
 
     def apply(self):
         self.command_string += " apply"
