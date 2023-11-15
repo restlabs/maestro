@@ -222,6 +222,18 @@ def test_build_terraform_plan_command_with_lock_false():
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform plan -lock=false"
 
+def test_build_terraform_plan_command_with_no_color():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .plan(
+            no_color=True
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform plan -no-color"
+
 def test_build_terraform_apply_with_variables_command():
     builder = TerraformCommandBuilder()
     terraform_command = (

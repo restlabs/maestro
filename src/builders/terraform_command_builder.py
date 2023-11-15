@@ -25,7 +25,8 @@ class TerraformCommandBuilder:
             detailed_exit_code: bool = None,
             input_false: bool = None,
             json: bool = None,
-            lock_false: bool = None
+            lock_false: bool = None,
+            no_color: bool = None
             ) -> str:
         
         self.command_string += " plan"
@@ -44,6 +45,7 @@ class TerraformCommandBuilder:
             'input_false': ' -input=false' if input_false else '',
             'json': ' -json' if json else '',
             'lock_false': ' -lock=false' if lock_false else '',
+            'no_color': ' -no-color' if no_color else ''
         }
 
         self.command_string += ''.join(options_mapping.values())
