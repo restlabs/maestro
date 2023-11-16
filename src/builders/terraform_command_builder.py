@@ -52,12 +52,23 @@ class TerraformCommandBuilder:
 
         return self
 
-    def apply(self):
+    def apply(
+            self,
+            var_inputs: list[str] = None,
+            auto_approve: bool = None,
+            compact_warnings: bool = None,
+            ) -> str:
+        
         self.command_string += " apply"
-        return self
 
-    def add_variable(self, name, value):
-        self.command_string += f' -var "{name}={value}"'
+        options_mapping = {
+            'var_inputs': ''.join([f" -var '{v}'" for v in var_inputs]) if var_inputs else '',
+            'auto_approve': ' -auto-approve' if auto_approve else '',
+            'compact_warnings': ' -compact-warnings' if compact_warnings else '',
+        }
+
+        self.command_string += ''.join(options_mapping.values())
+
         return self
 
     def build(self):

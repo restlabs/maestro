@@ -238,12 +238,50 @@ def test_build_terraform_apply_with_variables_command():
     builder = TerraformCommandBuilder()
     terraform_command = (
         builder
-        .apply()
-        .add_variable("region", "us-west-1")
+        .apply(
+            var_inputs=['region=us-west-1']
+        )
         .build()
     )
     assert isinstance(terraform_command, TerraformCommand)
-    assert terraform_command.command_string == "terraform apply -var \"region=us-west-1\""
+    assert terraform_command.command_string == "terraform apply -var 'region=us-west-1'"
+
+def test_build_terraform_apply_with_auto_approve():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .apply(
+            auto_approve=True
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform apply -auto-approve"
+
+def test_build_terraform_apply_with_auto_approve_and_vars():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .apply(
+            auto_approve=True,
+            var_inputs=['region=us-west-1']
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform apply -var 'region=us-west-1' -auto-approve"
+
+def test_build_terraform_apply_with_auto_compact_warnings():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .apply(
+            compact_warnings=True,
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform apply -compact-warnings"
 
 def test_command_runner_run_command():
     runner = CommandRunner()
