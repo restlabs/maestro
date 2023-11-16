@@ -6,4 +6,4 @@ class TerraformCommand(Command):
         self.command_string = command_string
 
     def execute(self):
-        return f"Executing Terraform command: {self.command_string}"
+        return self.command_string

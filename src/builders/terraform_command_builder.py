@@ -52,7 +52,6 @@ class TerraformCommandBuilder:
 
         return self
 
-
     def apply(self):
         self.command_string += " apply"
         return self
