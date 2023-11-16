@@ -7,7 +7,7 @@ import pytest
 def test_terraform_command_execute():
     terraform_command = TerraformCommand("dummy_command")
     output = terraform_command.execute()
-    assert output == "Executing Terraform command: dummy_command"
+    assert output == "dummy_command"
 
 def test_build_terraform_init_command():
     builder = TerraformCommandBuilder()
@@ -249,4 +249,4 @@ def test_command_runner_run_command():
     runner = CommandRunner()
     terraform_command = TerraformCommand("dummy_command")
     output = runner.run_command(terraform_command.execute())
-    assert output == "Executing command: Executing Terraform command: dummy_command"
+    assert output == "Executing command: dummy_command"
