@@ -307,6 +307,43 @@ def test_build_terraform_apply_with_auto_compact_warnings():
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform apply -compact-warnings"
 
+def test_build_terraform_apply_with_input_false():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .apply(
+            input_false=True,
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform apply -input=false"
+
+def test_build_terraform_apply_with_input_false_json():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .apply(
+            input_false=True,
+            json=True
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform apply -input=false -json"
+
+def test_build_terraform_apply_with_lock_false():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .apply(
+            lock_false=True
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform apply -lock=false"
+
 
 def test_command_runner_run_command():
     runner = CommandRunner()
