@@ -21,4 +21,4 @@ jobs:
 
     - name: Run Pytest
       run: |
-        python -m pytest
+        python -m pytest .\tests\terraform.py -v
