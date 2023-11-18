@@ -12,25 +12,70 @@ class TerraformCommandBuilder:
             self.command_string += f' -reconfigure -backend-config={backend_config}'
         return self
 
-    def plan(self, 
-            var_file_name: str = None, 
-            plan_output_file_name: str = None, 
-            destroy: bool = None,
-            refresh_only: bool = None,
-            refresh_false: bool = None,
-            replace: list[str] = None,
-            targets: list[str] = None,
-            var_inputs: list[str] = None,
-            compact_warnings: bool = None,
-            detailed_exit_code: bool = None,
-            input_false: bool = None,
-            json: bool = None,
-            lock_false: bool = None,
-            no_color: bool = None
-            ) -> str:
-        
+    def plan(self,
+             var_file_name: str = None,
+             plan_output_file_name: str = None,
+             destroy: bool = None,
+             refresh_only: bool = None,
+             refresh_false: bool = None,
+             replace: list[str] = None,
+             targets: list[str] = None,
+             var_inputs: list[str] = None,
+             compact_warnings: bool = None,
+             detailed_exit_code: bool = None,
+             input_false: bool = None,
+             json: bool = None,
+             lock_false: bool = None,
+             no_color: bool = None
+             ) -> str:
+
         self.command_string += " plan"
 
+        command_options = self.terraform_command_options(var_file_name, plan_output_file_name, destroy, refresh_only,
+                                                         refresh_false, replace, targets, var_inputs, compact_warnings,
+                                                         detailed_exit_code, input_false, json, lock_false, no_color)
+
+        self.command_string += ''.join(command_options)
+
+        return self
+
+    def apply(
+            self,
+        var_file_name: str = None,
+        plan_output_file_name: str = None,
+        destroy: bool = None,
+        refresh_only: bool = None,
+        refresh_false: bool = None,
+        replace: list[str] = None,
+        targets: list[str] = None,
+        var_inputs: list[str] = None,
+        compact_warnings: bool = None,
+        detailed_exit_code: bool = None,
+        input_false: bool = None,
+        json: bool = None,
+        lock_false: bool = None,
+        no_color: bool = None,
+        auto_approve: bool = None
+    ) -> str:
+
+        self.command_string += " apply"
+
+        command_options = self.terraform_command_options(var_file_name, plan_output_file_name, destroy, refresh_only,
+                                                         refresh_false, replace, targets, var_inputs, compact_warnings,
+                                                         detailed_exit_code, input_false, json, lock_false, no_color, auto_approve)
+
+        self.command_string += ''.join(command_options)
+
+        return self
+
+    def build(self):
+        return TerraformCommand(self.command_string)
+
+    def terraform_command_options(self, var_file_name=None, plan_output_file_name=None, destroy=False,
+                                  refresh_only=False, refresh_false=False, replace=None,
+                                  targets=None, var_inputs=None, compact_warnings=False,
+                                  detailed_exit_code=False, input_false=False, json=False,
+                                  lock_false=False, no_color=False, auto_approve=False):
         options_mapping = {
             'var_file_name': f' -var-file={var_file_name}' if var_file_name else '',
             'plan_output_file_name': f' -out={plan_output_file_name}' if plan_output_file_name else '',
@@ -45,20 +90,10 @@ class TerraformCommandBuilder:
             'input_false': ' -input=false' if input_false else '',
             'json': ' -json' if json else '',
             'lock_false': ' -lock=false' if lock_false else '',
-            'no_color': ' -no-color' if no_color else ''
+            'no_color': ' -no-color' if no_color else '',
+            'auto_approve': ' -auto-approve' if auto_approve else ''
         }
 
-        self.command_string += ''.join(options_mapping.values())
-
-        return self
-
-    def apply(self):
-        self.command_string += " apply"
-        return self
-
-    def add_variable(self, name, value):
-        self.command_string += f' -var "{name}={value}"'
-        return self
-
-    def build(self):
-        return TerraformCommand(self.command_string)
+        command_options = [
+            value for value in options_mapping.values() if value]
+        return command_options

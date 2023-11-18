@@ -4,10 +4,12 @@ from src.commands.terraform_command import TerraformCommand
 from src.commands.command_runner import CommandRunner
 import pytest
 
+
 def test_terraform_command_execute():
     terraform_command = TerraformCommand("dummy_command")
     output = terraform_command.execute()
     assert output == "dummy_command"
+
 
 def test_build_terraform_init_command():
     builder = TerraformCommandBuilder()
@@ -18,6 +20,7 @@ def test_build_terraform_init_command():
     )
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform init"
+
 
 def test_build_terraform_init_reconfigure_command():
     builder = TerraformCommandBuilder()
@@ -31,6 +34,7 @@ def test_build_terraform_init_reconfigure_command():
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform init -reconfigure -backend-config=test"
 
+
 def test_build_terraform_plan_command():
     builder = TerraformCommandBuilder()
     terraform_command = (
@@ -40,6 +44,7 @@ def test_build_terraform_plan_command():
     )
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform plan"
+
 
 def test_build_terraform_plan_command_with_var_file():
     builder = TerraformCommandBuilder()
@@ -53,6 +58,7 @@ def test_build_terraform_plan_command_with_var_file():
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform plan -var-file=test"
 
+
 def test_build_terraform_plan_command_with_plan_output():
     builder = TerraformCommandBuilder()
     terraform_command = (
@@ -64,6 +70,7 @@ def test_build_terraform_plan_command_with_plan_output():
     )
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform plan -out=test"
+
 
 def test_build_terraform_plan_command_with_destroy():
     builder = TerraformCommandBuilder()
@@ -77,6 +84,7 @@ def test_build_terraform_plan_command_with_destroy():
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform plan -destroy"
 
+
 def test_build_terraform_plan_command_with_refresh():
     builder = TerraformCommandBuilder()
     terraform_command = (
@@ -88,6 +96,7 @@ def test_build_terraform_plan_command_with_refresh():
     )
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform plan -refresh-only"
+
 
 def test_build_terraform_plan_command_with_var_file_destroy():
     builder = TerraformCommandBuilder()
@@ -102,6 +111,7 @@ def test_build_terraform_plan_command_with_var_file_destroy():
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform plan -var-file=test -destroy"
 
+
 def test_build_terraform_plan_command_with_refresh_false():
     builder = TerraformCommandBuilder()
     terraform_command = (
@@ -114,29 +124,32 @@ def test_build_terraform_plan_command_with_refresh_false():
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform plan -refresh=false"
 
+
 def test_build_terraform_plan_command_with_multiple_replace():
     builder = TerraformCommandBuilder()
     terraform_command = (
         builder
         .plan(
-            replace=["test","test2"]
+            replace=["test", "test2"]
         )
         .build()
     )
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform plan -replace=test -replace=test2"
 
+
 def test_build_terraform_plan_command_with_multiple_target():
     builder = TerraformCommandBuilder()
     terraform_command = (
         builder
         .plan(
-            targets=["test","test2"]
+            targets=["test", "test2"]
         )
         .build()
     )
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform plan -target=test -target=test2"
+
 
 def test_build_terraform_plan_command_with_var_input():
     builder = TerraformCommandBuilder()
@@ -150,17 +163,19 @@ def test_build_terraform_plan_command_with_var_input():
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform plan -var 'KEY=VALUE'"
 
+
 def test_build_terraform_plan_command_with_var_inputs():
     builder = TerraformCommandBuilder()
     terraform_command = (
         builder
         .plan(
-            var_inputs=["KEY=VALUE","KEY2=VALUE2", "KEY3=VALUE3"]
+            var_inputs=["KEY=VALUE", "KEY2=VALUE2", "KEY3=VALUE3"]
         )
         .build()
     )
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform plan -var 'KEY=VALUE' -var 'KEY2=VALUE2' -var 'KEY3=VALUE3'"
+
 
 def test_build_terraform_plan_command_with_compact_warnings():
     builder = TerraformCommandBuilder()
@@ -174,6 +189,7 @@ def test_build_terraform_plan_command_with_compact_warnings():
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform plan -compact-warnings"
 
+
 def test_build_terraform_plan_command_with_detailed_exit_code():
     builder = TerraformCommandBuilder()
     terraform_command = (
@@ -185,6 +201,7 @@ def test_build_terraform_plan_command_with_detailed_exit_code():
     )
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform plan -detailed-exitcode"
+
 
 def test_build_terraform_plan_command_with_input_false():
     builder = TerraformCommandBuilder()
@@ -198,6 +215,7 @@ def test_build_terraform_plan_command_with_input_false():
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform plan -input=false"
 
+
 def test_build_terraform_plan_command_with_json():
     builder = TerraformCommandBuilder()
     terraform_command = (
@@ -209,6 +227,7 @@ def test_build_terraform_plan_command_with_json():
     )
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform plan -json"
+
 
 def test_build_terraform_plan_command_with_lock_false():
     builder = TerraformCommandBuilder()
@@ -222,6 +241,7 @@ def test_build_terraform_plan_command_with_lock_false():
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform plan -lock=false"
 
+
 def test_build_terraform_plan_command_with_no_color():
     builder = TerraformCommandBuilder()
     terraform_command = (
@@ -234,16 +254,96 @@ def test_build_terraform_plan_command_with_no_color():
     assert isinstance(terraform_command, TerraformCommand)
     assert terraform_command.command_string == "terraform plan -no-color"
 
+
 def test_build_terraform_apply_with_variables_command():
     builder = TerraformCommandBuilder()
     terraform_command = (
         builder
-        .apply()
-        .add_variable("region", "us-west-1")
+        .apply(
+            var_inputs=['region=us-west-1']
+        )
         .build()
     )
     assert isinstance(terraform_command, TerraformCommand)
-    assert terraform_command.command_string == "terraform apply -var \"region=us-west-1\""
+    assert terraform_command.command_string == "terraform apply -var 'region=us-west-1'"
+
+
+def test_build_terraform_apply_with_auto_approve():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .apply(
+            auto_approve=True
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform apply -auto-approve"
+
+
+def test_build_terraform_apply_with_auto_approve_and_vars():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .apply(
+            auto_approve=True,
+            var_inputs=['region=us-west-1']
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform apply -var 'region=us-west-1' -auto-approve"
+
+
+def test_build_terraform_apply_with_auto_compact_warnings():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .apply(
+            compact_warnings=True,
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform apply -compact-warnings"
+
+def test_build_terraform_apply_with_input_false():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .apply(
+            input_false=True,
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform apply -input=false"
+
+def test_build_terraform_apply_with_input_false_json():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .apply(
+            input_false=True,
+            json=True
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform apply -input=false -json"
+
+def test_build_terraform_apply_with_lock_false():
+    builder = TerraformCommandBuilder()
+    terraform_command = (
+        builder
+        .apply(
+            lock_false=True
+        )
+        .build()
+    )
+    assert isinstance(terraform_command, TerraformCommand)
+    assert terraform_command.command_string == "terraform apply -lock=false"
+
 
 def test_command_runner_run_command():
     runner = CommandRunner()
