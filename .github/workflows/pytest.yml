@@ -1,9 +1,8 @@
-name: Run Pytest
-
-on: workflow_dispatch
-
+name: Test Workflow
+on: [workflow_dispatch]
 jobs:
-  test:
+  example:
+    name: Test
     runs-on: ubuntu-latest
 
     steps:
